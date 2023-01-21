@@ -31,6 +31,10 @@
   margin-bottom: 20px;
 }
 
+.code-link {
+  text-align: center;
+}
+
 #date-time {
   font-size: 20px;
 }
