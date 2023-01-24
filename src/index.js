@@ -36,6 +36,13 @@ function displayWeatherCondition(response) {
   );
   document.querySelector("#description").innerHTML =
     response.data.condition.description;
+
+  let iconElement = document.querySelector("#icon");
+  iconElement.setAttribute(
+    "src",
+    `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${response.data.condition.icon}.png`
+  );
+  iconElement.setAttribute("alt", response.data.condition.description);
 }
 
 function searchCity(city) {
@@ -63,6 +70,7 @@ function getCurrentLocation(event) {
 }
 
 let dateElement = document.querySelector("#date-time");
+
 let currentTime = new Date();
 dateElement.innerHTML = formatDate(currentTime);
 
