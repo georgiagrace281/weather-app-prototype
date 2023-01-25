@@ -25,9 +25,10 @@ function formatDate(date) {
 
 function displayWeatherCondition(response) {
   document.querySelector("#city").innerHTML = response.data.city;
-  document.querySelector("#temperature").innerHTML = Math.round(
-    response.data.temperature.current
-  );
+
+  celsiusTemp = response.data.temperature.current;
+
+  document.querySelector("#temperature").innerHTML = Math.round(celsiusTemp);
 
   document.querySelector("#humidity").innerHTML =
     response.data.temperature.humidity;
@@ -68,6 +69,22 @@ function getCurrentLocation(event) {
   event.preventDefault();
   navigator.geolocation.getCurrentPosition(searchLocation);
 }
+function displayFahrenheitTemp(event) {
+  event.preventDefault;
+  let fahrenheitTemp = (celsiusTemp * 9) / 5 + 32;
+  celsiusLink.classList.remove("active");
+  fahrenheitLink.classList.add("active");
+  let tempElement = document.querySelector("#temperature");
+  tempElement.innerHTML = Math.round(fahrenheitTemp);
+}
+
+function displayCelsiusTemp(event) {
+  event.preventDefault;
+  celsiusLink.classList.add("active");
+  fahrenheitLink.classList.remove("active");
+  let tempElement = document.querySelector("#temperature");
+  tempElement.innerHTML = Math.round(celsiusTemp);
+}
 
 let dateElement = document.querySelector("#date-time");
 
@@ -82,14 +99,10 @@ currentLocationButton.addEventListener("click", getCurrentLocation);
 
 searchCity("Anchorage");
 
-//function convertToFahrenheit(event) {
-//event.preventDefault();
-//let temperatureElement = document.querySelector("#temperature");
-//temperatureElement.innerHTML = 66;
-//}
+let fahrenheitLink = document.querySelector("#fahrenheit-link");
+fahrenheitLink.addEventListener("click", displayFahrenheitTemp);
 
-//function convertToCelsius(event) {
-// event.preventDefault();
-//let temperatureElement = document.querySelector("#temperature");
-// temperatureElement.innerHTML = 19;
-//}
+let celsiusLink = document.querySelector("#celsius-link");
+celsiusLink.addEventListener("click", displayCelsiusTemp);
+
+let celsiusTemp = null;

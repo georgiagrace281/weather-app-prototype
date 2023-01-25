@@ -7,24 +7,11 @@
   border-radius: 10px;
 }
 
-.clouds {
-  font-size: 58px;
-
-  margin: 0 auto;
-}
-
-.temperature {
-  font-size: 64px;
-  font-weight: 400;
-  line-height: 1;
-  color: #db9f87;
-  font-weight: 400;
-}
-
 .units {
   position: relative;
   top: -34px;
   font-size: 20px;
+  text-decoration: none;
 }
 
 .search-form {
@@ -33,6 +20,29 @@
 
 .code-link {
   text-align: center;
+}
+
+.units .active {
+  color: rgb(33, 33, 33);
+  cursor: default;
+  text-decoration: none;
+}
+
+.units .active:hover {
+  text-decoration: none;
+}
+
+#temperature {
+  font-size: 64px;
+  font-weight: 400;
+  line-height: 1;
+  color: #db9f87;
+  font-weight: 400;
+}
+
+#icon {
+  font-size: 58px;
+  margin: 0 auto;
 }
 
 #date-time {
@@ -49,4 +59,20 @@
 
 #description {
   text-transform: capitalize;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
 }
