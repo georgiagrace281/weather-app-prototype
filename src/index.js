@@ -44,6 +44,8 @@ function displayWeatherCondition(response) {
     `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${response.data.condition.icon}.png`
   );
   iconElement.setAttribute("alt", response.data.condition.description);
+
+  getForecast(response.data.coordinates);
 }
 
 function searchCity(city) {
@@ -70,7 +72,8 @@ function getCurrentLocation(event) {
   navigator.geolocation.getCurrentPosition(searchLocation);
 }
 function displayFahrenheitTemp(event) {
-  event.preventDefault;
+  event.preventDefault();
+
   let fahrenheitTemp = (celsiusTemp * 9) / 5 + 32;
   celsiusLink.classList.remove("active");
   fahrenheitLink.classList.add("active");
@@ -78,26 +81,55 @@ function displayFahrenheitTemp(event) {
   tempElement.innerHTML = Math.round(fahrenheitTemp);
 }
 
-function displayForecast() {
+function displayCelsiusTemp(event) {
+  event.preventDefault();
+
+  celsiusLink.classList.add("active");
+  fahrenheitLink.classList.remove("active");
+  let tempElement = document.querySelector("#temperature");
+  tempElement.innerHTML = Math.round(celsiusTemp);
+}
+
+function getForecast(coordinates) {
+  let apiKey = "024d0031b35o6et4f3a9f5e47fa542db";
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${coordinates.longitude}&lat=${coordinates.latitude}&key=${apiKey}`;
+  console.log(apiUrl);
+  axios.get(apiUrl).then(displayForecast);
+}
+
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  return days[day];
+}
+
+function displayForecast(response) {
+  let forecast = response.data.daily;
   let forecastElement = document.querySelector("#forecast");
 
-  let days = ["Thu", "Fri", "Sat", "Sun"];
-
   let forecastHTML = `<div class="row">`;
-  days.forEach(function (day) {
+  forecast.forEach(function (forecastDay) {
     forecastHTML =
       forecastHTML +
       `
       <div class="col-2">
-        <div class="weather-forecast-date">${day}</div>
+        <div class="weather-forecast-date">${formatDay(forecastDay.time)}</div>
         <img
-          src="http://openweathermap.org/img/wn/50d@2x.png"
+          src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${
+            forecastDay.condition.icon
+          }.png"
           alt=""
           width="42"
         />
         <div class="weather-forecast-temperatures">
-          <span class="weather-forecast-temperature-max"> 18° </span>
-          <span class="weather-forecast-temperature-min"> 12° </span>
+          <span class="weather-forecast-temperature-max"> ${
+            forecastDay.temperature.maximum
+          }° </span>
+          <span class="weather-forecast-temperature-min"> ${
+            forecastDay.temperature.minimum
+          }° </span>
         </div>
       </div>
   `;
@@ -106,14 +138,6 @@ function displayForecast() {
   forecastHTML = forecastHTML + `</div>`;
   forecastElement.innerHTML = forecastHTML;
   console.log(forecastHTML);
-}
-
-function displayCelsiusTemp(event) {
-  event.preventDefault;
-  celsiusLink.classList.add("active");
-  fahrenheitLink.classList.remove("active");
-  let tempElement = document.querySelector("#temperature");
-  tempElement.innerHTML = Math.round(celsiusTemp);
 }
 
 let dateElement = document.querySelector("#date-time");
@@ -128,7 +152,6 @@ let currentLocationButton = document.querySelector("#current");
 currentLocationButton.addEventListener("click", getCurrentLocation);
 
 searchCity("Anchorage");
-displayForecast();
 
 let fahrenheitLink = document.querySelector("#fahrenheit-link");
 fahrenheitLink.addEventListener("click", displayFahrenheitTemp);
