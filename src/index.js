@@ -59,6 +59,10 @@ function handleSubmit(event) {
   let city = document.querySelector("#city-input").value;
   searchCity(city);
 }
+function getCurrentLocation(event) {
+  event.preventDefault();
+  navigator.geolocation.getCurrentPosition(searchLocation);
+}
 
 function searchLocation(position) {
   let apiKey = "024d0031b35o6et4f3a9f5e47fa542db";
@@ -67,10 +71,6 @@ function searchLocation(position) {
   axios.get(apiUrl).then(displayWeatherCondition);
 }
 
-function getCurrentLocation(event) {
-  event.preventDefault();
-  navigator.geolocation.getCurrentPosition(searchLocation);
-}
 function displayFahrenheitTemp(event) {
   event.preventDefault();
 
@@ -110,10 +110,11 @@ function displayForecast(response) {
   let forecastElement = document.querySelector("#forecast");
 
   let forecastHTML = `<div class="row">`;
-  forecast.forEach(function (forecastDay) {
-    forecastHTML =
-      forecastHTML +
-      `
+  forecast.forEach(function (forecastDay, index) {
+    if (index < 6) {
+      forecastHTML =
+        forecastHTML +
+        `
       <div class="col-2">
         <div class="weather-forecast-date">${formatDay(forecastDay.time)}</div>
         <img
@@ -124,15 +125,16 @@ function displayForecast(response) {
           width="42"
         />
         <div class="weather-forecast-temperatures">
-          <span class="weather-forecast-temperature-max"> ${
+          <span class="weather-forecast-temperature-max"> ${Math.round(
             forecastDay.temperature.maximum
-          }° </span>
-          <span class="weather-forecast-temperature-min"> ${
+          )}° </span>
+          <span class="weather-forecast-temperature-min"> ${Math.round(
             forecastDay.temperature.minimum
-          }° </span>
+          )}° </span>
         </div>
       </div>
   `;
+    }
   });
 
   forecastHTML = forecastHTML + `</div>`;
