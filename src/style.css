@@ -1,6 +1,13 @@
+body {
+  background: linear-gradient(
+    111.5deg,
+    rgb(228, 247, 255) 21.9%,
+    rgb(255, 216, 194) 92.2%
+  );
+}
 .main-body {
-  color: #f2b298;
-  border: 1px solid grey;
+  color: #7fa99b;
+  border: 1px solid #fdc57b;
   padding: 20px;
   margin: 20px auto;
   max-width: 600px;
@@ -36,7 +43,7 @@
   font-size: 64px;
   font-weight: 400;
   line-height: 1;
-  color: #db9f87;
+  color: #394a51;
   font-weight: 400;
 }
 
